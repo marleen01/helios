@@ -23,7 +23,7 @@ function draw() {
     planets[i].applyForce(force);
     planets[i].update();
     planets[i].display();
-    // planets[i].displayOrbit();
+    planets[i].displayOrbit();
   }
   star.display();
 }
