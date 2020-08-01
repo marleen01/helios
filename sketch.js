@@ -2,13 +2,14 @@ let planets  = [];
 let star;
 let orbits = [];
 let c = 0;
+let ea_d = 20;
 function setup() {
   createCanvas(600, 600);
   frameRate(60);
-  mercury = new Planet(280, 340, 0.33, 0, 5, 0.5);
-  // venus = new Planet(200, 200, 487, 1, 0);
-  star = new Attractor();
-  planets.push(mercury);
+  mercury = new Planet(280, 335, 0.33, 0, 1.95, 0.8, ea_d * 0.383);
+  venus = new Planet(200, 270, 4.87, 1, -0.3, 1.99, ea_d * 0.949);
+  star = new Sun();
+  planets.push(mercury, venus);
   for (var i = 0; i < planets.length; i++) {
     orbits.push([]);
   }
@@ -22,23 +23,24 @@ function draw() {
     planets[i].applyForce(force);
     planets[i].update();
     planets[i].display();
-    planets[i].displayOrbit();
+    // planets[i].displayOrbit();
   }
   star.display();
+  // noLoop();
 }
 
-class Attractor {
+class Sun {
 
   constructor() {
     this.pos = createVector(width/2, height/2);
     this.mass = 1988500;
-    this.G = Math.pow(6.6743, -4);
+    this.G = Math.pow(6.6743, -5);
   }
 
   attract(mover) {
     let force = p5.Vector.sub(this.pos, mover.pos);
     let distance = force.mag();
-    distance = constrain(distance, 5, 25);
+    distance = constrain(distance, 38, 58);
 
     let strength = (this.G * this.mass * mover.mass) /
     (distance * distance);
@@ -54,7 +56,8 @@ class Attractor {
 }
 
 class Planet {
-  constructor(x, y, m, id, startx, starty) {
+  constructor(x, y, m, id, startx, starty, dia) {
+    this.dia = dia;
     this.mass = m;
     this.startx = startx;
     this.starty = starty;
@@ -81,7 +84,7 @@ class Planet {
     stroke(0);
     fill(255);
     ellipse(this.pos.x, this.pos.y,
-      12.75, 12.75);
+      this.dia, this.dia);
     pop();
   }
 
